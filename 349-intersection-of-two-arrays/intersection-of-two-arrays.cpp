@@ -2,23 +2,34 @@ class Solution {
 public:
     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
 
-        unordered_set<int> s1;
-        unordered_set<int> ans;
+        vector<int> ans;
 
-        // Store nums1 elements
-        for (int x : nums1) {
-            s1.insert(x);
-        }
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
 
-        // Check nums2 elements
-        for (int x : nums2) {
+        for(int i = 0; i < nums1.size(); i++) {
 
-            if (s1.count(x)) {
-                ans.insert(x);
+            // Skip duplicate in nums1
+            if(i > 0 && nums1[i] == nums1[i - 1])
+                continue;
+
+            for(int j = 0; j < nums2.size(); j++) {
+
+                // Skip duplicate in nums2
+                if(j > 0 && nums2[j] == nums2[j - 1])
+                    continue;
+
+                // Since nums2 is sorted
+                if(nums2[j] > nums1[i])
+                    break;
+
+                if(nums1[i] == nums2[j]) {
+                    ans.push_back(nums1[i]);
+                    break;  // IMPORTANT
+                }
             }
         }
 
-        // Convert set to vector
-        return vector<int>(ans.begin(), ans.end());
+        return ans;
     }
 };
