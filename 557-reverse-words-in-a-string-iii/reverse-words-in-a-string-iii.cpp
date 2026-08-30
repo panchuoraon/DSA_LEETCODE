@@ -2,20 +2,33 @@ class Solution {
 public:
     string reverseWords(string s) {
 
-        stringstream ss(s);
-        string word;
-        string ans = "";
+        int n = s.size();
+        int l = 0;
 
-        while(ss >> word) {
+        for(int i = 0; i < n; i++) {
 
-            reverse(word.begin(), word.end());
+            // Found the end of a word
+            if(s[i] == ' ' || i == n - 1) {
 
-            ans += word;
-            ans += " ";
+                int r;
+
+                if(s[i] == ' ')
+                    r = i - 1;
+                else
+                    r = i;
+
+                // Reverse current word
+                while(l < r) {
+                    swap(s[l], s[r]);
+                    l++;
+                    r--;
+                }
+
+                // Start of next word
+                l = i + 1;
+            }
         }
 
-        ans.pop_back();
-
-        return ans;
+        return s;
     }
 };
