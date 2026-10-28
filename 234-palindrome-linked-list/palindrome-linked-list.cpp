@@ -6,38 +6,40 @@ public:
             return true;
         }
 
-        // Find the middle
-        ListNode* slow = head;
-        ListNode* fast = head;
+        // Copy the original list
+        ListNode dummy(0);
+        ListNode* tail = &dummy;
+        ListNode* temp = head;
 
-        while (fast->next != nullptr &&
-               fast->next->next != nullptr) {
-            slow = slow->next;
-            fast = fast->next->next;
+        while (temp != nullptr) {
+            tail->next = new ListNode(temp->val);
+            tail = tail->next;
+            temp = temp->next;
         }
 
-        // Reverse the second half
+        ListNode* original = dummy.next;
+
+        // Reverse the original linked list
         ListNode* prev = nullptr;
-        ListNode* curr = slow->next;
+        temp = head;
 
-        while (curr != nullptr) {
-            ListNode* nextNode = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = nextNode;
+        while (temp != nullptr) {
+            ListNode* nextNode = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = nextNode;
         }
 
-        // Compare both halves
-        ListNode* first = head;
-        ListNode* second = prev;
+        // Compare reversed list with the copy
+        ListNode* rev = prev;
 
-        while (second != nullptr) {
-            if (first->val != second->val) {
+        while (original != nullptr && rev != nullptr) {
+            if (original->val != rev->val) {
                 return false;
             }
 
-            first = first->next;
-            second = second->next;
+            original = original->next;
+            rev = rev->next;
         }
 
         return true;
